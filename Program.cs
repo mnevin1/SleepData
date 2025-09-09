@@ -44,6 +44,27 @@ if (resp == "1")
 }
 else if (resp == "2")
 {
-    // TODO: parse data file
-
+    // Parse data file
+    if (!File.Exists("data.txt"))
+    {
+        Console.WriteLine("data.txt not found.");
+    }
+    else
+    {
+        string[] lines = File.ReadAllLines("data.txt");
+        foreach (string line in lines)
+        {
+            // Each line: M/d/yyyy,#|#|#|#|#|#|#
+            string[] parts = line.Split(',');
+            if (parts.Length != 2)
+            {
+                Console.WriteLine($"Invalid line: {line}");
+                continue;
+            }
+            string date = parts[0];
+            string[] hours = parts[1].Split('|');
+            Console.WriteLine($"Date: {date}");
+            Console.WriteLine($"Hours slept: {string.Join(", ", hours)}");
+        }
+    }
 }
