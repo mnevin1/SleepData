@@ -61,10 +61,33 @@ else if (resp == "2")
                 Console.WriteLine($"Invalid line: {line}");
                 continue;
             }
-            string date = parts[0];
+            // Parse date
+            if (!DateTime.TryParse(parts[0], out DateTime weekStart))
+            {
+                Console.WriteLine($"Invalid date: {parts[0]}");
+                continue;
+            }
             string[] hours = parts[1].Split('|');
-            Console.WriteLine($"Date: {date}");
-            Console.WriteLine($"Hours slept: {string.Join(", ", hours)}");
+            if (hours.Length != 7)
+            {
+                Console.WriteLine($"Invalid hours: {parts[1]}");
+                continue;
+            }
+            // Print week header
+            Console.WriteLine($"Week of {weekStart:MMM, dd, yyyy}");
+            Console.WriteLine(" Su Mo Tu We Th Fr Sa");
+            Console.WriteLine(" -- -- -- -- -- -- --");
+            // Print hours, right-aligned in 3 spaces
+            string hourLine = "";
+            foreach (string h in hours)
+            {
+                if (int.TryParse(h, out int val))
+                    hourLine += $"{val,3}";
+                else
+                    hourLine += "  ?";
+            }
+            Console.WriteLine(hourLine);
+            Console.WriteLine();
         }
     }
 }
